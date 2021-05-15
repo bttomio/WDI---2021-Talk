@@ -1,6 +1,7 @@
 # PACKAGES NEEDED ####
 
-list.of.packages <- c('WDI', 'dplyr', 'ggplot2', 'ggthemes', 'knitr', 'kableExtra', 'rnaturalearth', 'tidyverse', 'ggrepel')
+list.of.packages <- c('WDI', 'ggthemes', 'knitr', 'kableExtra', 'rnaturalearth', 
+                      'tidyverse', 'ggrepel', 'gganimate', 'transformr')
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, library, character.only = T, quietly = T)
@@ -27,7 +28,7 @@ ne_countries(returnclass = "sf") %>%
   scale_fill_viridis_c(labels = scales::percent_format(scale = 1)) +
   theme(legend.position="bottom") +
   labs(
-    title = name_self_employed,
+    title = paste0(name_self_employed, " in 2019"),
     fill = NULL,
     caption = paste("Source:", source_self_employed) 
   )
@@ -51,7 +52,7 @@ ne_countries(returnclass = "sf") %>%
   scale_fill_viridis_c(labels = scales::percent_format(scale = 1)) +
   theme(legend.position="bottom") +
   labs(
-    title = name_self_employed,
+    title = paste0(name_self_employed, " in 2008"),
     fill = NULL,
     caption = paste("Source:", source_self_employed) 
   )
@@ -75,7 +76,7 @@ ne_countries(returnclass = "sf") %>%
   scale_fill_viridis_c(labels = scales::percent_format(scale = 1)) +
   theme(legend.position="bottom") +
   labs(
-    title = name_self_employed,
+    title = paste0(name_self_employed, " in 1991"),
     fill = NULL,
     caption = paste("Source:", source_self_employed) 
   )
@@ -101,7 +102,7 @@ ne_countries(returnclass = "sf") %>%
   scale_fill_viridis_c(labels = scales::dollar_format(scale = 1)) +
   theme(legend.position="bottom", legend.key.width = unit(2.5, "cm")) +
   labs(
-    title = name_GDP_PC,
+    title = paste0(name_GDP_PC, " in 2019"),
     fill = NULL,
     caption = paste("Source:", source_GDP_PC)
   )
@@ -143,7 +144,7 @@ life_search <- WDIsearch('life')
 
 # Life expectancy at birth, female (years) in 2018
 indicator <- c("Life expectancy at birth, female (years)" = 'SP.DYN.LE00.FE.IN')
-datWM6 <- WDI(indicator, country="all",start = '2018', end = '2018')
+datWM6 <- WDI(indicator, country="all",start = '1960', end = '2018')
 name_life <- as.data.frame(Data_info$series) %>%
   filter(indicator == "SP.DYN.LE00.FE.IN") %>%
   select(name)
@@ -153,12 +154,16 @@ source_life <- as.data.frame(Data_info$series) %>%
 ne_countries(returnclass = "sf") %>%
   left_join(datWM6, c("iso_a2" = "iso2c")) %>%
   filter(iso_a2 != "ATA") %>% # remove Antarctica
-  ggplot(aes(fill = `Life expectancy at birth, female (years)`)) +
-  geom_sf() +
+  ggplot() +
+  geom_sf(aes(fill = `Life expectancy at birth, female (years)`)) +
   scale_fill_viridis_c(labels = scales::number_format(scale = 1)) +
   theme(legend.position="bottom") +
   labs(
-    title = name_life,
+    title = paste0(name_life, " in {closest_state}"),
     fill = NULL,
     caption = paste("Source:", source_life)
-  )
+  ) +
+  transition_states(year)
+
+anim <- animate(test)
+anim

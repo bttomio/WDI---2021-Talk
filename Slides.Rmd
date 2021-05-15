@@ -29,7 +29,7 @@ meta() %>%
     image = "https://bttomio.github.io/slides/WDI---2021-Talk/share-card.png",
     image_alt = paste(
       "Collect and use open access World Bank data to know your country,", 
-      "presented  by Bruno Thiago Tomio"
+      "presented by Bruno Thiago Tomio"
     ),
     og_type = "website",
     og_author = "Bruno Thiago Tomio",

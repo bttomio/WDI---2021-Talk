@@ -1,6 +1,7 @@
 # PACKAGES NEEDED ####
 
-list.of.packages <- c('WDI', 'dplyr', 'ggplot2', 'ggthemes', 'knitr', 'kableExtra', 'rnaturalearth', 'tidyverse', 'ggrepel')
+list.of.packages <- c('WDI', 'ggthemes', 'knitr', 'kableExtra', 'rnaturalearth', 
+                      'tidyverse', 'ggrepel', 'gganimate', 'transformr')
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, library, character.only = T, quietly = T)
