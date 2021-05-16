@@ -22,12 +22,12 @@ meta() %>%
   meta_name("github-repo" = "bttomio/WDI---2021-Talk") %>% 
   meta_social(
     title = "Collect and use open access World Bank data to know your country",
-    description = paste(
+    description = paste0(
       "Introduction to the R package WDI."
     ),
     url = "https://bttomio.github.io/slides/WDI---2021-Talk/Slides.html",
     image = "https://bttomio.github.io/slides/WDI---2021-Talk/share-card.png",
-    image_alt = paste(
+    image_alt = paste0(
       "Collect and use open access World Bank data to know your country,", 
       "presented by Bruno Thiago Tomio"
     ),
@@ -48,6 +48,8 @@ library(ggplot2)
 library(ggthemes)
 library(ggrepel)
 library(icon)
+library(transformr)
+library(gganimate)
 ```
 
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
@@ -278,6 +280,48 @@ Data_countries %>%
 
 ---
 
+**Plot data for several countries (1/2)**
+
+```{r, eval=FALSE}
+# indicator = NY.GDP.PCAP.KD / name = GDP per capita (constant 2010 US$)
+indicator <- c("GDP per capita" = 'IT.NET.USER.ZS')
+datall <- WDI(indicator, country="all", end = 2019)
+
+LATAM <- Data_info$country %>%
+  data.frame() %>%
+  filter(region == "Latin America & Caribbean") %>%
+  select(country) %>%
+  unlist()
+
+datall %>%
+  filter(country %in% LATAM) %>%
+  ggplot(aes(year, `GDP per capita`)) + geom_line() +
+  facet_wrap(vars(country), scales = "free_y")
+```
+
+---
+
+**Plot data for several countries (2/2)**
+
+```{r, echo=FALSE, warning=FALSE, fig.width=15, fig.height=10, fig.align='center'}
+# indicator = NY.GDP.PCAP.KD / name = GDP per capita (constant 2010 US$)
+indicator <- c("GDP per capita" = 'IT.NET.USER.ZS')
+datall <- WDI(indicator, country="all", end = 2019)
+
+LATAM <- Data_info$country %>%
+  data.frame() %>%
+  filter(region == "Latin America & Caribbean") %>%
+  select(country) %>%
+  unlist()
+
+datall %>%
+  filter(country %in% LATAM) %>%
+  ggplot(aes(year, `GDP per capita`)) + geom_line() +
+  facet_wrap(vars(country), scales = "free_y")
+```
+
+---
+
 count: false
 
 class: inverse, center, middle
@@ -298,7 +342,7 @@ Based on the `wbstats` website </br> http://nset-ornl.github.io/wbstats/index.ht
 
 ---
 
-**World maps (1/2)** &#127758;
+**World maps (1/3)** &#127758;
 
 .panelset[
 .panel[.panel-name[Code Map 1]
@@ -328,9 +372,9 @@ ne_countries(returnclass = "sf") %>%
   scale_fill_viridis_c(labels = scales::percent_format(scale = 1)) +
   theme(legend.position="bottom") +
   labs(
-    title = name_self_employed,
+    title = paste0(name_self_employed, " in 2019"),
     fill = NULL,
-    caption = paste("Source:", source_self_employed) 
+    caption = paste0("Source:", source_self_employed) 
   )
 ```
 ]
@@ -358,9 +402,9 @@ ne_countries(returnclass = "sf") %>%
   scale_fill_viridis_c(labels = scales::percent_format(scale = 1)) +
   theme(legend.position="bottom") +
   labs(
-    title = name_self_employed,
+    title = paste0(name_self_employed, " in 2019"),
     fill = NULL,
-    caption = paste("Source:", source_self_employed) 
+    caption = paste0("Source:", source_self_employed) 
   )
 ```
 ]
@@ -386,9 +430,9 @@ ne_countries(returnclass = "sf") %>%
   scale_fill_viridis_c(labels = scales::percent_format(scale = 1)) +
   theme(legend.position="bottom") +
   labs(
-    title = name_self_employed,
+    title = paste0(name_self_employed, " in 2008"), #<<
     fill = NULL,
-    caption = paste("Source:", source_self_employed) 
+    caption = paste0("Source:", source_self_employed) 
   )
 ```
 ]
@@ -416,9 +460,9 @@ ne_countries(returnclass = "sf") %>%
   scale_fill_viridis_c(labels = scales::percent_format(scale = 1)) +
   theme(legend.position="bottom") +
   labs(
-    title = name_self_employed,
+    title = paste0(name_self_employed, " in 2008"),
     fill = NULL,
-    caption = paste("Source:", source_self_employed) 
+    caption = paste0("Source:", source_self_employed) 
   )
 ```
 ]
@@ -444,9 +488,9 @@ ne_countries(returnclass = "sf") %>%
   scale_fill_viridis_c(labels = scales::percent_format(scale = 1)) +
   theme(legend.position="bottom") +
   labs(
-    title = name_self_employed,
+    title = paste0(name_self_employed, " in 1991"), #<<
     fill = NULL,
-    caption = paste("Source:", source_self_employed) 
+    caption = paste0("Source:", source_self_employed) 
   )
 ```
 ]
@@ -474,9 +518,9 @@ ne_countries(returnclass = "sf") %>%
   scale_fill_viridis_c(labels = scales::percent_format(scale = 1)) +
   theme(legend.position="bottom") +
   labs(
-    title = name_self_employed,
+    title = paste0(name_self_employed, " in 1991"),
     fill = NULL,
-    caption = paste("Source:", source_self_employed) 
+    caption = paste0("Source:", source_self_employed) 
   )
 ```
 ]
@@ -484,7 +528,7 @@ ne_countries(returnclass = "sf") %>%
 
 ---
 
-**World maps (2/2)** &#127757;
+**World maps (2/3)** &#127757;
 
 .panelset[
 .panel[.panel-name[Code Map 4]
@@ -511,9 +555,9 @@ ne_countries(returnclass = "sf") %>%
   scale_fill_viridis_c(labels = scales::dollar_format(scale = 1)) + #<<
   theme(legend.position="bottom", legend.key.width = unit(2.5, "cm")) + #<<
   labs(
-    title = name_GDP_PC, #<<
+    title = paste0(name_GDP_PC, " in 2019"), #<<
     fill = NULL,
-    caption = paste("Source:", source_GDP_PC) #<<
+    caption = paste0("Source:", source_GDP_PC) #<<
   )
 ```
 ]
@@ -541,9 +585,9 @@ ne_countries(returnclass = "sf") %>%
   scale_fill_viridis_c(labels = scales::dollar_format(scale = 1)) +
   theme(legend.position="bottom", legend.key.width = unit(2.5, "cm")) +
   labs(
-    title = name_GDP_PC,
+    title = paste0(name_GDP_PC, " in 2019"),
     fill = NULL,
-    caption = paste("Source:", source_GDP_PC)
+    caption = paste0("Source:", source_GDP_PC)
   )
 ```
 ]
@@ -621,9 +665,9 @@ ne_countries(returnclass = "sf") %>%
   scale_fill_viridis_c(labels = scales::number_format(scale = 1)) + #<<
   theme(legend.position="bottom") +
   labs(
-    title = name_life, #<<
+    title = paste0(name_life, " in 2018"), #<<
     fill = NULL,
-    caption = paste("Source:", source_life)  #<<
+    caption = paste0("Source:", source_life)  #<<
   )
 ```
 ]
@@ -651,10 +695,189 @@ ne_countries(returnclass = "sf") %>%
   scale_fill_viridis_c(labels = scales::number_format(scale = 1)) +
   theme(legend.position="bottom") +
   labs(
-    title = name_life,
+    title = paste0(name_life, " in 2018"),
     fill = NULL,
-    caption = paste("Source:", source_life) 
+    caption = paste0("Source:", source_life) 
   )
+```
+]
+]
+
+---
+
+**World maps (3/3)** &#127759;
+
+.panelset[
+.panel[.panel-name[Code Map 7]
+```{r eval=FALSE}
+library(gganimate) #<<
+
+# Self-employed, 1970-2019
+indicator <- c("Self-employed" = 'SL.EMP.SELF.ZS')
+datWM7 <- WDI(indicator, country="all", start = 1990, end = 2019) #<<
+
+name_self_employed <- as.data.frame(Data_info$series) %>%
+  filter(indicator == "SL.EMP.SELF.ZS") %>%
+  select(name)
+
+source_self_employed <- as.data.frame(Data_info$series) %>%
+  filter(indicator == "SL.EMP.SELF.ZS") %>%
+  select(sourceOrganization)
+
+ne_countries(returnclass = "sf") %>%
+  left_join(datWM7, c("iso_a2" = "iso2c")) %>% #<<
+  filter(iso_a2 != "ATA") %>% # remove Antarctica
+  ggplot(aes(fill = `Self-employed`)) +
+  geom_sf() +
+  scale_fill_viridis_c(labels = scales::percent_format(scale = 1)) +
+  theme(legend.position="bottom") +
+  labs(
+    title = paste0(name_self_employed, " in {closest_state}"), #<<
+    fill = NULL,
+    caption = paste0("Source:", source_self_employed)) + 
+  transition_states(year, transition_length = 3, state_length = 1) #<<
+```
+]
+.panel[.panel-name[Plot 7]
+```{r, fig.width=11, fig.height=7, fig.align='center', echo=FALSE, warning=FALSE, message=FALSE}
+# Self-employed, 1970-2019
+indicator <- c("Self-employed" = 'SL.EMP.SELF.ZS')
+datWM7 <- WDI(indicator, country="all", start = 1990, end = 2019) #<<
+
+name_self_employed <- as.data.frame(Data_info$series) %>%
+  filter(indicator == "SL.EMP.SELF.ZS") %>%
+  select(name)
+
+source_self_employed <- as.data.frame(Data_info$series) %>%
+  filter(indicator == "SL.EMP.SELF.ZS") %>%
+  select(sourceOrganization)
+
+ne_countries(returnclass = "sf") %>%
+  left_join(datWM7, c("iso_a2" = "iso2c")) %>% #<<
+  filter(iso_a2 != "ATA") %>% # remove Antarctica
+  ggplot(aes(fill = `Self-employed`)) +
+  geom_sf() +
+  scale_fill_viridis_c(labels = scales::percent_format(scale = 1)) +
+  theme(legend.position="bottom") +
+  labs(
+    title = paste0(name_self_employed, " in {closest_state}"), #<<
+    fill = NULL,
+    caption = paste0("Source:", source_self_employed)) + 
+  transition_states(year, transition_length = 3, state_length = 1)
+```
+]
+.panel[.panel-name[Code Map 8]
+```{r eval=FALSE}
+# GDP per capita (constant 2010 US$), 1970-2019
+indicator <- c("GDP per capita" = 'NY.GDP.PCAP.KD') #<<
+datWM7 <- WDI(indicator, country="all", start = 1970, end = 2019) #<<
+
+name_GDP_PC <- as.data.frame(Data_info$series) %>% 
+  filter(indicator == "NY.GDP.PCAP.KD") %>% 
+  select(name)
+
+source_GDP_PC <- as.data.frame(Data_info$series) %>% 
+  filter(indicator == "NY.GDP.PCAP.KD") %>% 
+  select(sourceOrganization) 
+
+ne_countries(returnclass = "sf") %>%
+  left_join(datWM7, c("iso_a2" = "iso2c")) %>% 
+  filter(iso_a2 != "ATA") %>% # remove Antarctica
+  ggplot(aes(fill = `GDP per capita`)) + 
+  geom_sf() +
+  scale_fill_viridis_c(labels = scales::dollar_format(scale = 1)) + 
+  theme(legend.position="bottom", legend.key.width = unit(2.5, "cm")) + 
+  labs(
+    title = paste0(name_GDP_PC, " in {closest_state}"), #<<
+    fill = NULL,
+    caption = paste0("Source:", source_GDP_PC)) +
+  transition_states(year, transition_length = 3, state_length = 1)
+```
+]
+.panel[.panel-name[Plot 8]
+```{r, fig.width=11, fig.height=7, fig.align='center', echo=FALSE, warning=FALSE, message=FALSE}
+# GDP per capita (constant 2010 US$), 1970-2019
+indicator <- c("GDP per capita" = 'NY.GDP.PCAP.KD') #<<
+datWM8 <- WDI(indicator, country="all", start = 1970, end = 2019) #<<
+
+name_GDP_PC <- as.data.frame(Data_info$series) %>% 
+  filter(indicator == "NY.GDP.PCAP.KD") %>% 
+  select(name)
+
+source_GDP_PC <- as.data.frame(Data_info$series) %>% 
+  filter(indicator == "NY.GDP.PCAP.KD") %>% 
+  select(sourceOrganization) 
+
+ne_countries(returnclass = "sf") %>%
+  left_join(datWM8, c("iso_a2" = "iso2c")) %>% #<<
+  filter(iso_a2 != "ATA") %>% # remove Antarctica
+  ggplot(aes(fill = `GDP per capita`)) + 
+  geom_sf() +
+  scale_fill_viridis_c(labels = scales::dollar_format(scale = 1)) + 
+  theme(legend.position="bottom", legend.key.width = unit(2.5, "cm")) + 
+  labs(
+    title = paste0(name_GDP_PC, " in {closest_state}"), #<<
+    fill = NULL,
+    caption = paste0("Source:", source_GDP_PC)) +
+  transition_states(year, transition_length = 3, state_length = 1)
+```
+]
+.panel[.panel-name[Code Map 9]
+```{r eval=FALSE}
+# Life expectancy at birth, female (years), 1970-2018
+indicator <- c("Life expectancy at birth, female (years)" = 'SP.DYN.LE00.FE.IN')
+datWM9 <- WDI(indicator, country="all",start = '1970', end = '2018') #<<
+
+name_life <- as.data.frame(Data_info$series) %>%
+  filter(indicator == "SP.DYN.LE00.FE.IN") %>%
+  select(name)
+
+source_life <- as.data.frame(Data_info$series) %>%
+  filter(indicator == "SP.DYN.LE00.FE.IN") %>%
+  select(sourceOrganization)
+
+ne_countries(returnclass = "sf") %>%
+  left_join(datWM9, c("iso_a2" = "iso2c")) %>% #<<
+  filter(iso_a2 != "ATA") %>% # remove Antarctica
+  ggplot(aes(fill = `Life expectancy at birth, female (years)`)) +
+  geom_sf() +
+  scale_fill_viridis_c(labels = scales::number_format(scale = 1)) +
+  theme(legend.position="bottom") +
+  labs(
+    title = paste0(name_life, " in {closest_state}"), #<<
+    fill = NULL,
+    caption = paste0("Source:", source_life)
+  ) +
+  transition_states(year, transition_length = 3, state_length = 1) #<<
+```
+]
+.panel[.panel-name[Plot 9]
+```{r, fig.width=11, fig.height=7, fig.align='center', echo=FALSE, warning=FALSE, message=FALSE}
+# Life expectancy at birth, female (years), 1970-2018
+indicator <- c("Life expectancy at birth, female (years)" = 'SP.DYN.LE00.FE.IN')
+datWM9 <- WDI(indicator, country="all",start = '1970', end = '2018')
+
+name_life <- as.data.frame(Data_info$series) %>%
+  filter(indicator == "SP.DYN.LE00.FE.IN") %>%
+  select(name)
+
+source_life <- as.data.frame(Data_info$series) %>%
+  filter(indicator == "SP.DYN.LE00.FE.IN") %>%
+  select(sourceOrganization)
+
+ne_countries(returnclass = "sf") %>%
+  left_join(datWM9, c("iso_a2" = "iso2c")) %>%
+  filter(iso_a2 != "ATA") %>% # remove Antarctica
+  ggplot(aes(fill = `Life expectancy at birth, female (years)`)) +
+  geom_sf() +
+  scale_fill_viridis_c(labels = scales::number_format(scale = 1)) +
+  theme(legend.position="bottom") +
+  labs(
+    title = paste0(name_life, " in {closest_state}"),
+    fill = NULL,
+    caption = paste0("Source:", source_life)
+  ) +
+  transition_states(year, transition_length = 3, state_length = 1)
 ```
 ]
 ]

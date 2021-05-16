@@ -59,18 +59,22 @@ Data_countries %>%
   kable_styling(font_size = 11) %>%
   scroll_box(width = "100%", height = "60%")
 
-# SLIDE 3 (REVIEW) ####
+# SLIDE 8 ####
 
 # indicator = NY.GDP.PCAP.KD / name = GDP per capita (constant 2010 US$)
 indicator <- c("GDP per capita" = 'IT.NET.USER.ZS')
 datall <- WDI(indicator, country="all", end = 2019)
 head(datall)
 
-countries_list <- unique(datall$country)
+LATAM <- Data_info$country %>%
+  data.frame() %>%
+  filter(region == "Latin America & Caribbean") %>%
+  select(country) %>%
+  unlist()
 
 datall %>%
   na.omit() %>%
-  filter(country %in% countries_list[1:47]) %>%
+  filter(country %in% LATAM) %>%
   ggplot(aes(year, `GDP per capita`)) + geom_line() +
-  facet_wrap(vars(country), scales = "free_y", shrink = T)
+  facet_wrap(vars(country), scales = "free_y")
 

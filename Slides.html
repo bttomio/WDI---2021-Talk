@@ -11,7 +11,7 @@
     <meta name="twitter:description" content="Introduction to the R package WDI."/>
     <meta name="twitter:url" content="https://bttomio.github.io/slides/WDI---2021-Talk/Slides.html"/>
     <meta name="twitter:image:src" content="https://bttomio.github.io/slides/WDI---2021-Talk/share-card.png"/>
-    <meta name="twitter:image:alt" content="Collect and use open access World Bank data to know your country, presented  by Bruno Thiago Tomio"/>
+    <meta name="twitter:image:alt" content="Collect and use open access World Bank data to know your country,presented by Bruno Thiago Tomio"/>
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:creator" content="@bttomio"/>
     <meta name="twitter:site" content="@bttomio"/>
@@ -19,7 +19,7 @@
     <meta property="og:description" content="Introduction to the R package WDI."/>
     <meta property="og:url" content="https://bttomio.github.io/slides/WDI---2021-Talk/Slides.html"/>
     <meta property="og:image" content="https://bttomio.github.io/slides/WDI---2021-Talk/share-card.png"/>
-    <meta property="og:image:alt" content="Collect and use open access World Bank data to know your country, presented  by Bruno Thiago Tomio"/>
+    <meta property="og:image:alt" content="Collect and use open access World Bank data to know your country,presented by Bruno Thiago Tomio"/>
     <meta property="og:type" content="website"/>
     <meta property="og:locale" content="en_US"/>
     <meta property="article:author" content="Bruno Thiago Tomio"/>
@@ -3641,6 +3641,34 @@ Data_countries %&gt;%
 
 ---
 
+**Plot data for several countries (1/2)**
+
+
+```r
+# indicator = NY.GDP.PCAP.KD / name = GDP per capita (constant 2010 US$)
+indicator &lt;- c("GDP per capita" = 'IT.NET.USER.ZS')
+datall &lt;- WDI(indicator, country="all", end = 2019)
+
+LATAM &lt;- Data_info$country %&gt;%
+  data.frame() %&gt;%
+  filter(region == "Latin America &amp; Caribbean") %&gt;%
+  select(country) %&gt;%
+  unlist()
+
+datall %&gt;%
+  filter(country %in% LATAM) %&gt;%
+  ggplot(aes(year, `GDP per capita`)) + geom_line() +
+  facet_wrap(vars(country), scales = "free_y")
+```
+
+---
+
+**Plot data for several countries (2/2)**
+
+&lt;img src="Slides_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
 count: false
 
 class: inverse, center, middle
@@ -3661,7 +3689,7 @@ Based on the `wbstats` website &lt;/br&gt; http://nset-ornl.github.io/wbstats/in
 
 ---
 
-**World maps (1/2)** &amp;#127758;
+**World maps (1/3)** &amp;#127758;
 
 .panelset[
 .panel[.panel-name[Code Map 1]
@@ -3692,14 +3720,14 @@ ne_countries(returnclass = "sf") %&gt;%
   scale_fill_viridis_c(labels = scales::percent_format(scale = 1)) +
   theme(legend.position="bottom") +
   labs(
-    title = name_self_employed,
+    title = paste0(name_self_employed, " in 2019"),
     fill = NULL,
-    caption = paste("Source:", source_self_employed) 
+    caption = paste0("Source:", source_self_employed) 
   )
 ```
 ]
 .panel[.panel-name[Plot 1]
-&lt;img src="Slides_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Slides_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
 ]
 .panel[.panel-name[Code Map 2]
 
@@ -3724,14 +3752,14 @@ ne_countries(returnclass = "sf") %&gt;%
   scale_fill_viridis_c(labels = scales::percent_format(scale = 1)) +
   theme(legend.position="bottom") +
   labs(
-    title = name_self_employed,
+*   title = paste0(name_self_employed, " in 2008"),
     fill = NULL,
-    caption = paste("Source:", source_self_employed) 
+    caption = paste0("Source:", source_self_employed) 
   )
 ```
 ]
 .panel[.panel-name[Plot 2]
-&lt;img src="Slides_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Slides_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
 ]
 .panel[.panel-name[Code Map 3]
 
@@ -3756,20 +3784,20 @@ ne_countries(returnclass = "sf") %&gt;%
   scale_fill_viridis_c(labels = scales::percent_format(scale = 1)) +
   theme(legend.position="bottom") +
   labs(
-    title = name_self_employed,
+*   title = paste0(name_self_employed, " in 1991"),
     fill = NULL,
-    caption = paste("Source:", source_self_employed) 
+    caption = paste0("Source:", source_self_employed) 
   )
 ```
 ]
 .panel[.panel-name[Plot 3]
-&lt;img src="Slides_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Slides_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
 ]
 ]
 
 ---
 
-**World maps (2/2)** &amp;#127757;
+**World maps (2/3)** &amp;#127757;
 
 .panelset[
 .panel[.panel-name[Code Map 4]
@@ -3797,14 +3825,14 @@ ne_countries(returnclass = "sf") %&gt;%
 * scale_fill_viridis_c(labels = scales::dollar_format(scale = 1)) +
 * theme(legend.position="bottom", legend.key.width = unit(2.5, "cm")) +
   labs(
-*   title = name_GDP_PC,
+*   title = paste0(name_GDP_PC, " in 2019"),
     fill = NULL,
-*   caption = paste("Source:", source_GDP_PC)
+*   caption = paste0("Source:", source_GDP_PC)
   )
 ```
 ]
 .panel[.panel-name[Plot 4]
-&lt;img src="Slides_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Slides_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
 ]
 .panel[.panel-name[Code Map 5]
 
@@ -3832,7 +3860,7 @@ ne_countries(returnclass = "sf") %&gt;%
 ```
 ]
 .panel[.panel-name[Plot 5]
-&lt;img src="Slides_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Slides_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" /&gt;
 ]
 .panel[.panel-name[Code Map 6]
 
@@ -3859,14 +3887,120 @@ ne_countries(returnclass = "sf") %&gt;%
 * scale_fill_viridis_c(labels = scales::number_format(scale = 1)) +
   theme(legend.position="bottom") +
   labs(
-*   title = name_life,
+*   title = paste0(name_life, " in 2018"),
     fill = NULL,
-*   caption = paste("Source:", source_life)
+*   caption = paste0("Source:", source_life)
   )
 ```
 ]
 .panel[.panel-name[Plot 6]
-&lt;img src="Slides_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Slides_files/figure-html/unnamed-chunk-26-1.png" style="display: block; margin: auto;" /&gt;
+]
+]
+
+---
+
+**World maps (3/3)** &amp;#127759;
+
+.panelset[
+.panel[.panel-name[Code Map 7]
+
+```r
+*library(gganimate)
+
+# Self-employed, 1970-2019
+indicator &lt;- c("Self-employed" = 'SL.EMP.SELF.ZS')
+*datWM7 &lt;- WDI(indicator, country="all", start = 1970, end = 2019)
+
+name_self_employed &lt;- as.data.frame(Data_info$series) %&gt;%
+  filter(indicator == "SL.EMP.SELF.ZS") %&gt;%
+  select(name)
+
+source_self_employed &lt;- as.data.frame(Data_info$series) %&gt;%
+  filter(indicator == "SL.EMP.SELF.ZS") %&gt;%
+  select(sourceOrganization)
+
+ne_countries(returnclass = "sf") %&gt;%
+* left_join(datWM7, c("iso_a2" = "iso2c")) %&gt;%
+  filter(iso_a2 != "ATA") %&gt;% # remove Antarctica
+  ggplot(aes(fill = `Self-employed`)) +
+  geom_sf() +
+  scale_fill_viridis_c(labels = scales::percent_format(scale = 1)) +
+  theme(legend.position="bottom") +
+  labs(
+*   title = paste0(name_self_employed, " in {closest_state}"),
+    fill = NULL,
+    caption = paste0("Source:", source_self_employed)) + 
+* transition_states(year, transition_length = 3, state_length = 1)
+```
+]
+.panel[.panel-name[Plot 7]
+&lt;img src="Slides_files/figure-html/unnamed-chunk-28-1.gif" style="display: block; margin: auto;" /&gt;
+]
+.panel[.panel-name[Code Map 8]
+
+```r
+# GDP per capita (constant 2010 US$), 1970-2019
+*indicator &lt;- c("GDP per capita" = 'NY.GDP.PCAP.KD')
+*datWM7 &lt;- WDI(indicator, country="all", start = 1970, end = 2019)
+
+name_GDP_PC &lt;- as.data.frame(Data_info$series) %&gt;% 
+  filter(indicator == "NY.GDP.PCAP.KD") %&gt;% 
+  select(name)
+
+source_GDP_PC &lt;- as.data.frame(Data_info$series) %&gt;% 
+  filter(indicator == "NY.GDP.PCAP.KD") %&gt;% 
+  select(sourceOrganization) 
+
+ne_countries(returnclass = "sf") %&gt;%
+  left_join(datWM7, c("iso_a2" = "iso2c")) %&gt;% 
+  filter(iso_a2 != "ATA") %&gt;% # remove Antarctica
+  ggplot(aes(fill = `GDP per capita`)) + 
+  geom_sf() +
+  scale_fill_viridis_c(labels = scales::dollar_format(scale = 1)) + 
+  theme(legend.position="bottom", legend.key.width = unit(2.5, "cm")) + 
+  labs(
+*   title = paste0(name_GDP_PC, " in {closest_state}"),
+    fill = NULL,
+    caption = paste0("Source:", source_GDP_PC)) +
+  transition_states(year, transition_length = 3, state_length = 1)
+```
+]
+.panel[.panel-name[Plot 8]
+&lt;img src="Slides_files/figure-html/unnamed-chunk-30-1.gif" style="display: block; margin: auto;" /&gt;
+]
+.panel[.panel-name[Code Map 9]
+
+```r
+# Life expectancy at birth, female (years), 1970-2018
+indicator &lt;- c("Life expectancy at birth, female (years)" = 'SP.DYN.LE00.FE.IN')
+*datWM9 &lt;- WDI(indicator, country="all",start = '1970', end = '2018')
+
+name_life &lt;- as.data.frame(Data_info$series) %&gt;%
+  filter(indicator == "SP.DYN.LE00.FE.IN") %&gt;%
+  select(name)
+
+source_life &lt;- as.data.frame(Data_info$series) %&gt;%
+  filter(indicator == "SP.DYN.LE00.FE.IN") %&gt;%
+  select(sourceOrganization)
+
+ne_countries(returnclass = "sf") %&gt;%
+* left_join(datWM9, c("iso_a2" = "iso2c")) %&gt;%
+  filter(iso_a2 != "ATA") %&gt;% # remove Antarctica
+  ggplot(aes(fill = `Life expectancy at birth, female (years)`)) +
+  geom_sf() +
+  scale_fill_viridis_c(labels = scales::number_format(scale = 1)) +
+  theme(legend.position="bottom") +
+  labs(
+*   title = paste0(name_life, " in {closest_state}"),
+    fill = NULL,
+    caption = paste0("Source:", source_life)
+  ) +
+* transition_states(year, transition_length = 3, state_length = 1)
+```
+]
+.panel[.panel-name[Plot 9]
+&lt;img src="Slides_files/figure-html/unnamed-chunk-32-1.gif" style="display: block; margin: auto;" /&gt;
 ]
 ]
 
@@ -3909,7 +4043,7 @@ hrg %&gt;%
 ```
 ]
 .panel[.panel-name[Plot 1]
-&lt;img src="Slides_files/figure-html/unnamed-chunk-26-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Slides_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
 ]
 .panel[.panel-name[Code HRG 2]
 
@@ -3945,7 +4079,7 @@ hrg %&gt;%
 ```
 ]
 .panel[.panel-name[Plot 2]
-&lt;img src="Slides_files/figure-html/unnamed-chunk-28-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Slides_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
 ]
 .panel[.panel-name[Code HRG 3]
 
@@ -3975,7 +4109,7 @@ ggplot(hrg2) +
 ```
 ]
 .panel[.panel-name[Plot 3]
-&lt;img src="Slides_files/figure-html/unnamed-chunk-30-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Slides_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
 ]
 ]
 

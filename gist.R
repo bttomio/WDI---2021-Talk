@@ -32,13 +32,6 @@ ne_countries(returnclass = "sf") %>%
   labs(
     title = paste0(name_life, " in {closest_state}"),
     fill = NULL,
-    caption = paste("Source:", source_life)
+    caption = paste0("Source:", source_life)
   ) +
-  transition_states(year) -> test_gif
-
-#animate(test_gif, height = 4, width = 6, units = "in", res = 150)
-
-magick::image_write(
-  animate(test_gif, width = 1000, height = 1000), 
-  "test.gif"
-)
+  transition_states(year)

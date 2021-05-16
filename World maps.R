@@ -30,7 +30,7 @@ ne_countries(returnclass = "sf") %>%
   labs(
     title = paste0(name_self_employed, " in 2019"),
     fill = NULL,
-    caption = paste("Source:", source_self_employed) 
+    caption = paste0("Source:", source_self_employed) 
   )
 
 ## Code Map 2 ####
@@ -54,7 +54,7 @@ ne_countries(returnclass = "sf") %>%
   labs(
     title = paste0(name_self_employed, " in 2008"),
     fill = NULL,
-    caption = paste("Source:", source_self_employed) 
+    caption = paste0("Source:", source_self_employed) 
   )
 
 ## Code Map 3 ####
@@ -78,7 +78,7 @@ ne_countries(returnclass = "sf") %>%
   labs(
     title = paste0(name_self_employed, " in 1991"),
     fill = NULL,
-    caption = paste("Source:", source_self_employed) 
+    caption = paste0("Source:", source_self_employed) 
   )
 
 # World maps (2/2) ####
@@ -104,7 +104,7 @@ ne_countries(returnclass = "sf") %>%
   labs(
     title = paste0(name_GDP_PC, " in 2019"),
     fill = NULL,
-    caption = paste("Source:", source_GDP_PC)
+    caption = paste0("Source:", source_GDP_PC)
   )
 
 ## Code Map 5 ####
@@ -144,7 +144,7 @@ life_search <- WDIsearch('life')
 
 # Life expectancy at birth, female (years) in 2018
 indicator <- c("Life expectancy at birth, female (years)" = 'SP.DYN.LE00.FE.IN')
-datWM6 <- WDI(indicator, country="all",start = '1960', end = '2018')
+datWM6 <- WDI(indicator, country="all",start = '2018', end = '2018')
 name_life <- as.data.frame(Data_info$series) %>%
   filter(indicator == "SP.DYN.LE00.FE.IN") %>%
   select(name)
@@ -154,16 +154,111 @@ source_life <- as.data.frame(Data_info$series) %>%
 ne_countries(returnclass = "sf") %>%
   left_join(datWM6, c("iso_a2" = "iso2c")) %>%
   filter(iso_a2 != "ATA") %>% # remove Antarctica
-  ggplot() +
-  geom_sf(aes(fill = `Life expectancy at birth, female (years)`)) +
+  ggplot(aes(fill = `Life expectancy at birth, female (years)`)) +
+  geom_sf() +
   scale_fill_viridis_c(labels = scales::number_format(scale = 1)) +
   theme(legend.position="bottom") +
   labs(
     title = paste0(name_life, " in {closest_state}"),
     fill = NULL,
-    caption = paste("Source:", source_life)
-  ) +
-  transition_states(year)
+    caption = paste0("Source:", source_life)
+  )
 
-anim <- animate(test)
-anim
+## Code Map 7 (Animation) ####
+
+# Self-employed, 1970-2019
+indicator <- c("Self-employed" = 'SL.EMP.SELF.ZS')
+datWM7 <- WDI(indicator, country="all", start = 1970, end = 2019) #<<
+
+name_self_employed <- as.data.frame(Data_info$series) %>%
+  filter(indicator == "SL.EMP.SELF.ZS") %>%
+  select(name)
+
+source_self_employed <- as.data.frame(Data_info$series) %>%
+  filter(indicator == "SL.EMP.SELF.ZS") %>%
+  select(sourceOrganization)
+
+ne_countries(returnclass = "sf") %>%
+  left_join(datWM7, c("iso_a2" = "iso2c")) %>% #<<
+  filter(iso_a2 != "ATA") %>% # remove Antarctica
+  ggplot(aes(fill = `Self-employed`)) +
+  geom_sf() +
+  scale_fill_viridis_c(labels = scales::percent_format(scale = 1)) +
+  theme(legend.position="bottom") +
+  labs(
+    title = paste0(name_self_employed, " in {closest_state}"), #<<
+    fill = NULL,
+    caption = paste0("Source:", source_self_employed)) + 
+  transition_states(year, transition_length = 3, state_length = 1)
+
+## Code Map 8 (Animation) ####
+
+# GDP per capita (constant 2010 US$), 1990-2019
+indicator <- c("GDP per capita" = 'NY.GDP.PCAP.KD') #<<
+datWM8 <- WDI(indicator, country="all", start = 1990, end = 2019) #<<
+
+name_GDP_PC <- as.data.frame(Data_info$series) %>% 
+  filter(indicator == "NY.GDP.PCAP.KD") %>% 
+  select(name)
+
+source_GDP_PC <- as.data.frame(Data_info$series) %>% 
+  filter(indicator == "NY.GDP.PCAP.KD") %>% 
+  select(sourceOrganization) 
+
+ne_countries(returnclass = "sf") %>%
+  left_join(datWM8, c("iso_a2" = "iso2c")) %>% 
+  filter(iso_a2 != "ATA") %>% # remove Antarctica
+  ggplot(aes(fill = `GDP per capita`)) + 
+  geom_sf() +
+  scale_fill_viridis_c(labels = scales::dollar_format(scale = 1)) + 
+  theme(legend.position="bottom", legend.key.width = unit(2.5, "cm")) + 
+  labs(
+    title = paste0(name_GDP_PC, " in {closest_state}"), #<<
+    fill = NULL,
+    caption = paste0("Source:", source_GDP_PC)) +
+  transition_states(year, transition_length = 3, state_length = 1)
+
+#WM8 <-
+#ne_countries(returnclass = "sf") %>%
+#  left_join(datWM7, c("iso_a2" = "iso2c")) %>% 
+#  filter(iso_a2 != "ATA") %>% # remove Antarctica
+#  ggplot(aes(fill = `GDP per capita`)) + 
+#  geom_sf() +
+#  scale_fill_viridis_c(labels = scales::dollar_format(scale = 1)) + 
+#  theme(legend.position="bottom", legend.key.width = unit(2.5, "cm")) + 
+#  labs(
+#    title = paste0(name_GDP_PC, " in {closest_state}"), #<<
+#    fill = NULL,
+#    caption = paste0("Source:", source_GDP_PC)) +
+#  transition_states(year, transition_length = 3, state_length = 1)
+
+#animate(WM8, nframes = 150, fps = 5, res = 100, width = 900, height = 600,
+#          end_pause = 20, renderer=gifski_renderer("WM8.gif"))
+
+## Code Map 9 (Animation) ####
+
+# Life expectancy at birth, female (years), 1970-2018
+indicator <- c("Life expectancy at birth, female (years)" = 'SP.DYN.LE00.FE.IN')
+datWM9 <- WDI(indicator, country="all",start = '1970', end = '2018')
+
+name_life <- as.data.frame(Data_info$series) %>%
+  filter(indicator == "SP.DYN.LE00.FE.IN") %>%
+  select(name)
+
+source_life <- as.data.frame(Data_info$series) %>%
+  filter(indicator == "SP.DYN.LE00.FE.IN") %>%
+  select(sourceOrganization)
+
+ne_countries(returnclass = "sf") %>%
+  left_join(datWM9, c("iso_a2" = "iso2c")) %>%
+  filter(iso_a2 != "ATA") %>% # remove Antarctica
+  ggplot(aes(fill = `Life expectancy at birth, female (years)`)) +
+  geom_sf() +
+  scale_fill_viridis_c(labels = scales::number_format(scale = 1)) +
+  theme(legend.position="bottom") +
+  labs(
+    title = paste0(name_life, " in {closest_state}"),
+    fill = NULL,
+    caption = paste0("Source:", source_life)
+  ) +
+  transition_states(year, transition_length = 3, state_length = 1)
