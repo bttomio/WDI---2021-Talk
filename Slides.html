@@ -3910,7 +3910,7 @@ ne_countries(returnclass = "sf") %&gt;%
 
 # Self-employed, 1970-2019
 indicator &lt;- c("Self-employed" = 'SL.EMP.SELF.ZS')
-*datWM7 &lt;- WDI(indicator, country="all", start = 1970, end = 2019)
+*datWM7 &lt;- WDI(indicator, country="all", start = 1990, end = 2019)
 
 name_self_employed &lt;- as.data.frame(Data_info$series) %&gt;%
   filter(indicator == "SL.EMP.SELF.ZS") %&gt;%
