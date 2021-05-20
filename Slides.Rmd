@@ -47,9 +47,11 @@ library(tidyverse)
 library(ggplot2)
 library(ggthemes)
 library(ggrepel)
-library(icon)
+library(icons)
+#remotes::install_github("mitchelloharawild/icons")
 library(transformr)
 library(gganimate)
+#devtools::install_github("gadenbuie/xaringanExtra")
 ```
 
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
@@ -110,7 +112,7 @@ class: inverse, center, middle
 
 ---
 
-# World Bank data in `r icon::fontawesome$brands$"r-project"`
+# World Bank data in `r icons::fontawesome$brands$"r-project"`
 
 The `WDI` package allows us to search and download data from the World Bank (several datasets, with thousands of variables)
 
@@ -764,6 +766,7 @@ ne_countries(returnclass = "sf") %>%
     fill = NULL,
     caption = paste0("Source:", source_self_employed)) + 
   transition_states(year, transition_length = 3, state_length = 1)
+#Packages png and gifski are needed
 ```
 ]
 .panel[.panel-name[Code Map 8]
@@ -1084,14 +1087,14 @@ class: inverse, center
 # Thank you!
 
 ```{r icon-style, echo=FALSE, include=FALSE}
-icon_style(fontawesome("cog", style = "solid"), size = 1, animate = "spin", color = "white")
+icon1 <- icon_style(fontawesome("cog", style = "solid"), size = 1, animate = "spin", fill = "white")
 
-icon_style(fontawesome("twitter", style = "brands"), size = 1, color = "white")
+icon2 <- icon_style(fontawesome("twitter", style = "brands"), size = 1, fill = "white")
 ```
 
-`r icon::fontawesome$solid$cog` [`bttomio@furb.br`](bttomio@furb.br)
+`r icon1` [`bttomio@furb.br`](bttomio@furb.br)
 
-`r icon::fontawesome$brands$twitter` [@bttomio](https://twitter.com/bttomio)
+`r icon2` [@bttomio](https://twitter.com/bttomio)
 ]
 
 <br><br><br><br>Slides created with [`xaringan`](https://github.com/yihui/xaringan) and [`xaringanthemer`](https://github.com/gadenbuie/xaringanthemer).
