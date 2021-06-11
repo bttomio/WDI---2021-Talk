@@ -3642,8 +3642,8 @@ Data_countries %&gt;%
 
 
 ```r
-# indicator = NY.GDP.PCAP.KD / name = GDP per capita (constant 2010 US$)
-indicator &lt;- c("GDP per capita" = 'IT.NET.USER.ZS')
+# indicator = IT.NET.USER.ZS / name = Individuals using the Internet (% of population)
+indicator &lt;- c("Individuals using the Internet (% of population)" = 'IT.NET.USER.ZS')
 datall &lt;- WDI(indicator, country="all", end = 2019)
 
 LATAM &lt;- Data_info$country %&gt;%
@@ -3654,7 +3654,7 @@ LATAM &lt;- Data_info$country %&gt;%
 
 datall %&gt;%
   filter(country %in% LATAM) %&gt;%
-  ggplot(aes(year, `GDP per capita`)) + geom_line() +
+  ggplot(aes(year, `Individuals using the Internet (% of population)`)) + geom_line() +
   facet_wrap(vars(country), scales = "free_y")
 ```
 

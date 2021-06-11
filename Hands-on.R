@@ -61,8 +61,8 @@ Data_countries %>%
 
 # SLIDE 8 ####
 
-# indicator = NY.GDP.PCAP.KD / name = GDP per capita (constant 2010 US$)
-indicator <- c("GDP per capita" = 'IT.NET.USER.ZS')
+# indicator = IT.NET.USER.ZS / name = Individuals using the Internet (% of population)
+indicator <- c("Individuals using the Internet (% of population)" = 'IT.NET.USER.ZS')
 datall <- WDI(indicator, country="all", end = 2019)
 head(datall)
 
@@ -75,6 +75,6 @@ LATAM <- Data_info$country %>%
 datall %>%
   na.omit() %>%
   filter(country %in% LATAM) %>%
-  ggplot(aes(year, `GDP per capita`)) + geom_line() +
+  ggplot(aes(year, `Individuals using the Internet (% of population)`)) + geom_line() +
   facet_wrap(vars(country), scales = "free_y")
 
