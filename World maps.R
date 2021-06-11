@@ -159,16 +159,16 @@ ne_countries(returnclass = "sf") %>%
   scale_fill_viridis_c(labels = scales::number_format(scale = 1)) +
   theme(legend.position="bottom") +
   labs(
-    title = paste0(name_life, " in {closest_state}"),
+    title = paste0(name_life, " in 2018"),
     fill = NULL,
     caption = paste0("Source:", source_life)
   )
 
 ## Code Map 7 (Animation) ####
 
-# Self-employed, 1970-2019
+# Self-employed, 1990-2019
 indicator <- c("Self-employed" = 'SL.EMP.SELF.ZS')
-datWM7 <- WDI(indicator, country="all", start = 1970, end = 2019) #<<
+datWM7 <- WDI(indicator, country="all", start = 1990, end = 2019) #<<
 
 name_self_employed <- as.data.frame(Data_info$series) %>%
   filter(indicator == "SL.EMP.SELF.ZS") %>%
@@ -217,23 +217,6 @@ ne_countries(returnclass = "sf") %>%
     fill = NULL,
     caption = paste0("Source:", source_GDP_PC)) +
   transition_states(year, transition_length = 3, state_length = 1)
-
-#WM8 <-
-#ne_countries(returnclass = "sf") %>%
-#  left_join(datWM7, c("iso_a2" = "iso2c")) %>% 
-#  filter(iso_a2 != "ATA") %>% # remove Antarctica
-#  ggplot(aes(fill = `GDP per capita`)) + 
-#  geom_sf() +
-#  scale_fill_viridis_c(labels = scales::dollar_format(scale = 1)) + 
-#  theme(legend.position="bottom", legend.key.width = unit(2.5, "cm")) + 
-#  labs(
-#    title = paste0(name_GDP_PC, " in {closest_state}"), #<<
-#    fill = NULL,
-#    caption = paste0("Source:", source_GDP_PC)) +
-#  transition_states(year, transition_length = 3, state_length = 1)
-
-#animate(WM8, nframes = 150, fps = 5, res = 100, width = 900, height = 600,
-#          end_pause = 20, renderer=gifski_renderer("WM8.gif"))
 
 ## Code Map 9 (Animation) ####
 

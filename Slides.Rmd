@@ -711,7 +711,7 @@ ne_countries(returnclass = "sf") %>%
 ```{r eval=FALSE}
 library(gganimate) #<<
 
-# Self-employed, 1970-2019
+# Self-employed, 1990-2019
 indicator <- c("Self-employed" = 'SL.EMP.SELF.ZS')
 datWM7 <- WDI(indicator, country="all", start = 1990, end = 2019) #<<
 
@@ -739,7 +739,7 @@ ne_countries(returnclass = "sf") %>%
 ]
 .panel[.panel-name[Plot 7]
 ```{r, fig.width=11, fig.height=7, fig.align='center', echo=FALSE, warning=FALSE, message=FALSE}
-# Self-employed, 1970-2019
+# Self-employed, 1990-2019
 indicator <- c("Self-employed" = 'SL.EMP.SELF.ZS')
 datWM7 <- WDI(indicator, country="all", start = 1990, end = 2019) #<<
 
