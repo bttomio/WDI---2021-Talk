@@ -12,7 +12,7 @@ output:
       countIncrementalSlides: false
       beforeInit: "macros.js"
     seal: false
-# PRINT OK = xaringan::decktape("./Slides.html", "./Slides.pdf", docker = F)
+# PRINT OK = xaringanBuilder::build_pdf("https://bttomio.github.io/slides/WDI2021/Slides.html", complex_slides = T, partial_slides = T)
 ---
 
 ```{r metathis, echo=FALSE}
