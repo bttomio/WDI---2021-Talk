@@ -11,6 +11,8 @@ output:
       highlightLines: true
       countIncrementalSlides: false
       beforeInit: "macros.js"
+    includes:
+      after_body: timer.html
     seal: false
 # PRINT OK = xaringanBuilder::build_pdf("https://bttomio.github.io/slides/WDI2021/Slides.html", complex_slides = T, partial_slides = T)
 ---

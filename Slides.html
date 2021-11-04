@@ -9,7 +9,7 @@
     <meta name="twitter:title" content="Collect and use open access World Bank data to know your country"/>
     <meta name="twitter:description" content="Introduction to the R package WDI."/>
     <meta name="twitter:url" content="https://bttomio.github.io/slides/WDI---2021-Talk/Slides.html"/>
-    <meta name="twitter:image:src" content="https://bttomio.github.io/slides/WDI---2021-Talk/share-card.png"/>
+    <meta name="twitter:image" content="https://bttomio.github.io/slides/WDI---2021-Talk/share-card.png"/>
     <meta name="twitter:image:alt" content="Collect and use open access World Bank data to know your country,presented by Bruno Thiago Tomio"/>
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:creator" content="@bttomio"/>
@@ -170,12 +170,12 @@ head(dat1)
 
 ```
 ##   iso2c country GDP per capita year
-## 1    BR  Brazil       11121.74 2019
-## 2    BR  Brazil       11079.71 2018
-## 3    BR  Brazil       11021.72 2017
-## 4    BR  Brazil       10965.97 2016
-## 5    BR  Brazil       11431.15 2015
-## 6    BR  Brazil       11951.21 2014
+## 1    BR  Brazil       8638.294 2019
+## 2    BR  Brazil       8582.350 2018
+## 3    BR  Brazil       8498.305 2017
+## 4    BR  Brazil       8455.323 2016
+## 5    BR  Brazil       8814.001 2015
+## 6    BR  Brazil       9214.989 2014
 ```
 
 *GDP per capita (US$ and local currency unity) for France (FR) and Brazil (BR)*
@@ -192,12 +192,12 @@ head(dat2)
 
 ```
 ##   iso2c country year GDP per capita (US$) GDP per capita (LCU)
-## 1    BR  Brazil 1960             3417.352             6011.806
-## 2    BR  Brazil 1961             3660.391             6439.361
-## 3    BR  Brazil 1962             3740.433             6580.170
-## 4    BR  Brazil 1963             3664.978             6447.429
-## 5    BR  Brazil 1964             3685.493             6483.519
-## 6    BR  Brazil 1965             3692.846             6496.454
+## 1    BR  Brazil 1960             2634.952             6011.806
+## 2    BR  Brazil 1961             2822.348             6439.361
+## 3    BR  Brazil 1962             2884.064             6580.170
+## 4    BR  Brazil 1963             2825.884             6447.429
+## 5    BR  Brazil 1964             2841.702             6483.519
+## 6    BR  Brazil 1965             2847.372             6496.454
 ```
 
 ---
@@ -4222,6 +4222,169 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>timer.utf8</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">.countdown {background: inherit;position: absolute;cursor: pointer;font-size: 100%;line-height: 1;border-color: #ddd;border-width: 3px;border-style: solid;border-radius: 15px;box-shadow: 0px 4px 10px 0px rgba(50, 50, 50, 0.4);-webkit-box-shadow: 0px 4px 10px 0px rgba(50, 50, 50, 0.4);margin: 0.6em;padding: 10px 15px;text-align: center;}.countdown {display: flex;align-items: center;justify-content: center;}.countdown .countdown-time {background: none;font-size: 100%;padding: 0;}.countdown-digits {color: inherit;}.countdown.running {border-color: #CECECE;background-color: #E5E5E5;}.countdown.running .countdown-digits {color: #393939;}.countdown.finished {border-color: #D83A20;background-color: #F04124;}.countdown.finished .countdown-digits {color: #3C1009;}.countdown.running.warning {border-color: #CFAE24;background-color: #E6C229;}.countdown.running.warning .countdown-digits {color: #39300A;}@-webkit-keyframes blink {from {opacity: 1}50% {opacity: 0.1}to {opacity: 1}}@keyframes blink {from {opacity: 1}50% {opacity: 0.1}to {opacity: 1}}.countdown.running.blink-colon .countdown-digits.colon {-webkit-animation: blink 2s steps(1, end) 0s infinite;animation: blink 2s steps(1, end) 0s infinite;}</style>
+  <script>var counters = {timer: {}};
+var update_timer = function(timer, force = false) {
+	var secs = timer.value;
+
+	// check if we should update timer or not
+	noup = timer.div.className.match(/noupdate-\d+/);
+	if (!force && noup != null) {
+	  noup = parseInt(noup[0].match(/\d+$/));
+	  if (secs > noup * 2 && secs % noup > 0) { return; }
+	}
+
+	// should we apply or remove warning class?
+	warnwhen = timer.div.dataset.warnwhen;
+	if (warnwhen && warnwhen > 0) {
+	  if (secs <= warnwhen && !timer.div.classList.contains("warning")) {
+	    timer.div.classList.add("warning");
+	  } else if (secs > warnwhen && timer.div.classList.contains("warning")) {
+	    timer.div.classList.remove("warning");
+	  }
+	}
+
+  var mins = Math.floor(secs / 60); // 1 min = 60 secs
+  secs -= mins * 60;
+
+  // Update HTML
+  timer.min.innerHTML = String(mins).padStart(2, 0);
+  timer.sec.innerHTML = String(secs).padStart(2, 0);
+}
+var countdown = function (e) {
+  target = e.target;
+  if (target.classList.contains("countdown-digits")) {
+    target = target.parentElement;
+  }
+  if (target.tagName == "CODE") {
+    target = target.parentElement;
+  }
+
+  // Init counter
+  if (!counters.timer.hasOwnProperty(target.id)) {
+    counters.timer[target.id] = {};
+    // Set the containers
+	  counters.timer[target.id].min = target.getElementsByClassName("minutes")[0];
+  	counters.timer[target.id].sec = target.getElementsByClassName("seconds")[0];
+  	counters.timer[target.id].div = target;
+  }
+
+  if (!counters.timer[target.id].running) {
+    if (!counters.timer[target.id].end) {
+      counters.timer[target.id].end   = parseInt(counters.timer[target.id].min.innerHTML) * 60;
+		  counters.timer[target.id].end  += parseInt(counters.timer[target.id].sec.innerHTML);
+    }
+
+    counters.timer[target.id].value = counters.timer[target.id].end;
+    update_timer(counters.timer[target.id]);
+    if (counters.ticker) counters.timer[target.id].value += 1;
+
+    // Start if not past end date
+    if (counters.timer[target.id].value > 0) {
+      base_class = target.className.replace(/\s?(running|finished)/, "")
+      target.className = base_class + " running";
+      counters.timer[target.id].running = true;
+
+      if (!counters.ticker) {
+        counters.ticker = setInterval(counter_update_all, 1000);
+      }
+    }
+  } else {
+    // Bump timer value if running & clicked
+    counters.timer[target.id].value += counter_bump_increment(counters.timer[target.id].end);
+    update_timer(counters.timer[target.id], force = true);
+    counters.timer[target.id].value += 1;
+  }
+};
+
+var counter_bump_increment = function(val) {
+  if (val <= 30) {
+    return 5;
+  } else if (val <= 300) {
+    return 15;
+  } else if (val <= 3000) {
+    return 30;
+  } else {
+    return 60;
+  }
+}
+
+var counter_update_all = function() {
+  // Iterate over all running timers
+  for (var i in counters.timer) {
+    // Stop if passed end time
+    console.log(counters.timer[i].id)
+    counters.timer[i].value--;
+    if (counters.timer[i].value <= 0) {
+      counters.timer[i].min.innerHTML = "00";
+      counters.timer[i].sec.innerHTML = "00";
+      counters.timer[i].div.className = counters.timer[i].div.className.replace("running", "finished");
+      counters.timer[i].running = false;
+    } else {
+      // Update
+      update_timer(counters.timer[i]);
+
+      // Play countdown sound if data-audio=true on container div
+      let audio = counters.timer[i].div.dataset.audio
+      if (audio && counters.timer[i].value == 5) {
+        counter_play_sound(audio);
+      }
+    }
+  }
+
+  // If no more running timers, then clear ticker
+  var timerIsRunning = false;
+  for (var t in counters.timer) {
+    timerIsRunning = timerIsRunning || counters.timer[t].running
+  }
+  if (!timerIsRunning) {
+    clearInterval(counters.ticker);
+    counters.ticker = null;
+  }
+}
+
+var counter_play_sound = function(url) {
+  if (typeof url === 'boolean') {
+    url = 'libs/countdown/smb_stage_clear.mp3';
+  }
+  sound = new Audio(url);
+  sound.play();
+}
+
+var counter_addEventListener = function() {
+  if (!document.getElementsByClassName("countdown").length) {
+    setTimeout(counter_addEventListener, 2);
+    return;
+  }
+  var counter_divs = document.getElementsByClassName("countdown");
+  console.log(counter_divs);
+  for (var i = 0; i < counter_divs.length; i++) {
+    counter_divs[i].addEventListener("click", countdown, false);
+  }
+};
+
+counter_addEventListener();
+</script>
+</head>
+<body>
+<div class="countdown blink-colon noupdate-5" id="timer_5fafc5fe" style="top:1.5%;right:0;font-size:100%;z-index:100" data-warnwhen="300">
+<code class="countdown-time"><span class="countdown-digits minutes">15</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+</body>
+</html>
 
 <script>
 slideshow._releaseMath = function(el) {
