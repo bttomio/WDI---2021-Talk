@@ -178,6 +178,11 @@ source_self_employed <- as.data.frame(Data_info$series) %>%
   filter(indicator == "SL.EMP.SELF.ZS") %>%
   select(sourceOrganization)
 
+# Error: arguments have different crs
+# CHECK FOR NEWER VERSIONS OF TRANSFORMR
+remove.packages("transformr")
+install.packages("https://cran.r-project.org/src/contrib/Archive/transformr/transformr_0.1.3.tar.gz", repos = NULL, type = "source")
+
 ne_countries(returnclass = "sf") %>%
   left_join(datWM7, c("iso_a2" = "iso2c")) %>% #<<
   filter(iso_a2 != "ATA") %>% # remove Antarctica
